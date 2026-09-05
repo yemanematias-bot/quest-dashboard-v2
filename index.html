@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Dashboard V2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="dashboard">
+    <header class="topbar">
+        <div>
+            <h1>⚔️ QUEST DASHBOARD V2</h1>
+            <p>System Online.</p>
+        </div>
+        <div class="level-box">
+            <span>LEVEL</span>
+            <strong id="top-level">01</strong>
+        </div>
+    </header>
+
+    <section class="xp-section">
+        <div class="xp-info">
+            <span>XP</span>
+            <span id="xp-text">0 / 1000</span>
+        </div>
+        <div class="xp-bar"><div class="xp-fill"></div></div>
+    </section>
+
+    <main class="grid">
+        <section class="panel">
+            <div class="panel-header">
+                <h2>⚔ MAIN QUESTS</h2>
+                <button id="add-main-quest">+ ADD QUEST</button>
+            </div>
+            <div id="main-quest-list"><p>No main quests yet.</p></div>
+        </section>
+
+        <section class="panel character-panel">
+            <h2>📊 CHARACTER</h2>
+            <div class="character-core">
+                <div><span>LEVEL</span><strong id="character-level">1</strong></div>
+                <div><span>TITLE</span><strong id="character-title">NOVICE</strong></div>
+            </div>
+            <div class="character-info">
+                <p>Total XP: <strong id="character-xp">0</strong></p>
+                <p>Quests Done: <strong id="character-quests">0</strong></p>
+            </div>
+            <div class="stat-grid">
+                <div class="stat-box"><span>💪 STR</span><strong id="stat-strength">0</strong></div>
+                <div class="stat-box"><span>🧠 INT</span><strong id="stat-knowledge">0</strong></div>
+                <div class="stat-box"><span>💰 WLT</span><strong id="stat-wealth">0</strong></div>
+                <div class="stat-box"><span>⚡ DSC</span><strong id="stat-discipline">0</strong></div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-header">
+                <h2>🔹 SIDE QUESTS</h2>
+                <button id="add-side-quest">+ ADD SIDE</button>
+            </div>
+            <div id="side-quest-list"><p>No side quests yet.</p></div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-header">
+                <h2>🔥 DAILY QUESTS</h2>
+                <button id="add-daily-quest">+ ADD DAILY</button>
+            </div>
+            <div id="daily-quest-list"><p>No daily quests yet.</p></div>
+        </section>
+
+        <section class="panel weekly-panel">
+            <div class="panel-header">
+                <h2>📅 WEEKLY QUESTS</h2>
+                <button id="add-weekly-quest">+ ADD WEEKLY</button>
+            </div>
+            <div id="weekly-quest-list"><p>No weekly quests yet.</p></div>
+        </section>
+
+        <section class="panel achievements-panel">
+            <div class="panel-header"><h2>🏆 ACHIEVEMENTS</h2></div>
+            <div id="achievement-list"><p>No achievements unlocked yet.</p></div>
+        </section>
+
+        <section class="panel history-panel">
+            <div class="panel-header">
+                <h2>📜 RECENT ACTIVITY</h2>
+                <div class="history-actions">
+                    <button id="export-backup">EXPORT</button>
+                    <button id="import-backup">IMPORT</button>
+                    <button id="clear-history">CLEAR</button>
+                </div>
+            </div>
+            <div id="history-list"><p>No completed quests yet.</p></div>
+        </section>
+    </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
