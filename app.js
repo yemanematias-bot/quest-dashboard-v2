@@ -393,6 +393,12 @@ function saveData() {
         "achievements",
         JSON.stringify(achievements)
     );
+
+    window.dispatchEvent(
+        new CustomEvent("quest-local-save", {
+            detail: snapshot
+        })
+    );
 }
 
 

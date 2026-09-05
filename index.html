@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quest Dashboard V2</title>
+    <title>Quest Dashboard V3</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -12,14 +12,34 @@
 <div class="dashboard">
     <header class="topbar">
         <div>
-            <h1>⚔️ QUEST DASHBOARD V2</h1>
-            <p>System Online.</p>
+            <h1>⚔️ QUEST DASHBOARD V3</h1>
+            <p id="system-status">System Online · Local Mode</p>
         </div>
         <div class="level-box">
             <span>LEVEL</span>
             <strong id="top-level">01</strong>
         </div>
     </header>
+
+    <section class="cloud-panel">
+        <div>
+            <strong>☁ CLOUD SYNC</strong>
+            <span id="cloud-status">Sign in to sync between devices.</span>
+        </div>
+
+        <div id="auth-signed-out" class="auth-controls">
+            <input id="auth-email" type="email" autocomplete="email" placeholder="Email">
+            <input id="auth-password" type="password" autocomplete="current-password" placeholder="Password">
+            <button id="sign-in">SIGN IN</button>
+            <button id="sign-up">CREATE ACCOUNT</button>
+        </div>
+
+        <div id="auth-signed-in" class="auth-controls" hidden>
+            <span id="account-email"></span>
+            <button id="sync-now">SYNC NOW</button>
+            <button id="sign-out">SIGN OUT</button>
+        </div>
+    </section>
 
     <section class="xp-section">
         <div class="xp-info">
@@ -99,6 +119,9 @@
     </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
 <script src="app.js"></script>
+<script src="cloud.js"></script>
 </body>
 </html>
