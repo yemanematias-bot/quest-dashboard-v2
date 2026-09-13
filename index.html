@@ -119,6 +119,39 @@
     </main>
 </div>
 
+<dialog id="quest-dialog" class="quest-dialog">
+    <form id="quest-form" method="dialog">
+        <div class="dialog-heading">
+            <div>
+                <span class="eyebrow">QUEST FORGE</span>
+                <h2 id="quest-dialog-title">CREATE QUEST</h2>
+            </div>
+            <button id="close-quest-dialog" class="icon-button" type="button" aria-label="Close">×</button>
+        </div>
+        <label>Quest name<input id="quest-name" name="name" maxlength="90" required placeholder="What must be done?"></label>
+        <div class="form-grid">
+            <label id="difficulty-field">Difficulty
+                <select id="quest-difficulty" name="difficulty">
+                    <option value="easy">Easy · 100 XP</option><option value="medium">Medium · 250 XP</option>
+                    <option value="hard">Hard · 500 XP</option><option value="boss">Boss · 1000 XP</option>
+                </select>
+            </label>
+            <label id="xp-field">XP reward<input id="quest-xp" name="xp" type="number" min="1" value="100"></label>
+            <label>Character stat
+                <select id="quest-category" name="category">
+                    <option value="strength">💪 Strength</option><option value="knowledge">🧠 Knowledge</option>
+                    <option value="wealth">💰 Wealth</option><option value="discipline">⚡ Discipline</option>
+                    <option value="general">⭐ General</option>
+                </select>
+            </label>
+            <label id="target-field">Weekly target<input id="quest-target" name="target" type="number" min="1" value="5"></label>
+            <label id="daily-link-field">Link a daily quest<select id="quest-daily-link" name="dailyLink"></select></label>
+        </div>
+        <p id="quest-form-error" class="form-error" role="alert"></p>
+        <div class="dialog-actions"><button type="button" id="cancel-quest-dialog">CANCEL</button><button type="submit" class="primary-action">FORGE QUEST</button></div>
+    </form>
+</dialog>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script src="app.js"></script>
