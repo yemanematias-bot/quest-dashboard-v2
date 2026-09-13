@@ -631,6 +631,15 @@ function updateCharacter() {
         "stat-discipline"
     ).textContent =
         player.stats.discipline;
+
+    document.getElementById("active-quest-count").textContent =
+        mainQuests.length + sideQuests.length + dailyQuests.length + weeklyQuests.length;
+
+    document.getElementById("daily-quest-count").textContent =
+        dailyQuests.length;
+
+    document.getElementById("cleared-quest-count").textContent =
+        player.questsDone;
 }
 
 
