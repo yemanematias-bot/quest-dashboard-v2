@@ -21,6 +21,7 @@ const targetField = document.getElementById("target-field");
 const dailyLinkField = document.getElementById("daily-link-field");
 const questFormError = document.getElementById("quest-form-error");
 let questDialogType = "main";
+let editingQuest = null;
 const clearHistoryButton = document.getElementById("clear-history");
 
 const mainQuestList = document.getElementById("main-quest-list");
@@ -182,27 +183,7 @@ function normalizeCategory(category) {
 }
 
 
-function chooseCategory(current = "general") {
 
-    const answer = prompt(
-        "Choose category:\n\n" +
-        "Strength\n" +
-        "Knowledge\n" +
-        "Wealth\n" +
-        "Discipline\n" +
-        "General",
-        current
-    );
-
-    if (answer === null) {
-        return null;
-    }
-
-    const category =
-        normalizeCategory(answer);
-
-    return category;
-}
 
 
 function categoryIcon(category) {
@@ -737,115 +718,13 @@ function getDailyQuestById(id) {
 }
 
 
-function findDailyQuestByName(name) {
-
-    const wanted =
-        name.trim().toLowerCase();
 
 
-    return dailyQuests.find(
-        function (quest) {
-
-            return (
-                quest.name
-                    .trim()
-                    .toLowerCase()
-                === wanted
-            );
-        }
-    );
-}
 
 
-function getDailyQuestNames() {
-
-    if (
-        dailyQuests.length === 0
-    ) {
-
-        return "No Daily Quests.";
-    }
 
 
-    return dailyQuests
-        .map(function (quest) {
 
-            return `• ${quest.name}`;
-        })
-        .join("\n");
-}
-
-
-function chooseDailyLink(
-    currentLinkedDailyId = null
-) {
-
-    const currentDaily =
-        currentLinkedDailyId
-            ? getDailyQuestById(
-                currentLinkedDailyId
-            )
-            : null;
-
-
-    const answer =
-        prompt(
-            "Auto-link to Daily Quest?\n\n" +
-            getDailyQuestNames() +
-            "\n\nType exact name.\nLeave blank for MANUAL.",
-            currentDaily
-                ? currentDaily.name
-                : ""
-        );
-
-
-    if (
-        answer === null
-    ) {
-
-        return {
-            cancelled: true,
-            linkedDailyId:
-                currentLinkedDailyId
-        };
-    }
-
-
-    if (
-        answer.trim() === ""
-    ) {
-
-        return {
-            cancelled: false,
-            linkedDailyId: null
-        };
-    }
-
-
-    const daily =
-        findDailyQuestByName(
-            answer
-        );
-
-
-    if (!daily) {
-
-        alert(
-            "Daily Quest not found."
-        );
-
-        return chooseDailyLink(
-            currentLinkedDailyId
-        );
-    }
-
-
-    return {
-        cancelled: false,
-        linkedDailyId:
-            daily.id
-    };
-}
 
 
 function advanceLinkedWeeklyQuests(
@@ -1128,85 +1007,11 @@ function renderMainQuests() {
             `;
 
 
-            element
-                .querySelector(
-                    ".edit-button"
-                )
-                .addEventListener(
-                    "click",
-                    function () {
-
-                        const name =
-                            prompt(
-                                "Edit quest:",
-                                quest.name
-                            );
-
-                        if (!name) return;
+            element.querySelector(".edit-button").addEventListener("click", function () {
+                openQuestDialog("main", { quest: quest, index: index });
+            });
 
 
-                        const difficulty =
-                            prompt(
-                                "Difficulty:\nEasy\nMedium\nHard\nBoss",
-                                quest.difficulty
-                            );
-
-                        if (!difficulty) {
-                            return;
-                        }
-
-
-                        const d =
-                            difficulty
-                                .trim()
-                                .toLowerCase();
-
-
-                        if (
-                            !mainXPRewards[d]
-                        ) {
-
-                            alert(
-                                "Invalid difficulty."
-                            );
-
-                            return;
-                        }
-
-
-                        const category =
-                            chooseCategory(
-                                quest.category
-                            );
-
-                        if (
-                            category === null
-                        ) {
-                            return;
-                        }
-
-
-                        quest.name =
-                            name.trim();
-
-                        quest.difficulty =
-                            d.charAt(0)
-                                .toUpperCase()
-                            +
-                            d.slice(1);
-
-                        quest.xp =
-                            mainXPRewards[d];
-
-                        quest.category =
-                            category;
-
-
-                        saveData();
-
-                        renderMainQuests();
-                    }
-                );
 
 
             element
@@ -1353,63 +1158,11 @@ function renderSideQuests() {
             `;
 
 
-            element
-                .querySelector(
-                    ".edit-button"
-                )
-                .addEventListener(
-                    "click",
-                    function () {
-
-                        const name =
-                            prompt(
-                                "Edit side quest:",
-                                quest.name
-                            );
-
-                        if (!name) return;
+            element.querySelector(".edit-button").addEventListener("click", function () {
+                openQuestDialog("side", { quest: quest, index: index });
+            });
 
 
-                        const xp =
-                            Number(
-                                prompt(
-                                    "XP reward:",
-                                    quest.xp
-                                )
-                            );
-
-                        if (!xp || xp < 1) {
-                            return;
-                        }
-
-
-                        const category =
-                            chooseCategory(
-                                quest.category
-                            );
-
-                        if (
-                            category === null
-                        ) {
-                            return;
-                        }
-
-
-                        quest.name =
-                            name.trim();
-
-                        quest.xp =
-                            xp;
-
-                        quest.category =
-                            category;
-
-
-                        saveData();
-
-                        renderSideQuests();
-                    }
-                );
 
 
             element
@@ -1574,63 +1327,11 @@ function renderDailyQuests() {
                 );
 
 
-            element
-                .querySelector(
-                    ".edit-button"
-                )
-                .addEventListener(
-                    "click",
-                    function () {
-
-                        const name =
-                            prompt(
-                                "Edit daily:",
-                                quest.name
-                            );
-
-                        if (!name) return;
+            element.querySelector(".edit-button").addEventListener("click", function () {
+                openQuestDialog("daily", { quest: quest, index: index });
+            });
 
 
-                        const xp =
-                            Number(
-                                prompt(
-                                    "XP reward:",
-                                    quest.xp
-                                )
-                            );
-
-                        if (!xp || xp < 1) {
-                            return;
-                        }
-
-
-                        const category =
-                            chooseCategory(
-                                quest.category
-                            );
-
-                        if (
-                            category === null
-                        ) {
-                            return;
-                        }
-
-
-                        quest.name =
-                            name.trim();
-
-                        quest.xp =
-                            xp;
-
-                        quest.category =
-                            category;
-
-
-                        saveData();
-
-                        renderAll();
-                    }
-                );
 
 
             element
@@ -2068,316 +1769,16 @@ function renderHistory() {
 
 
 // ========================================
-// ADD MAIN
+// QUEST FORGE
 // ========================================
 
-({ addEventListener() {} }).addEventListener(
-    "click",
-    function () {
-
-        const name =
-            prompt(
-                "Enter quest:"
-            );
-
-        if (!name) return;
-
-
-        const difficulty =
-            prompt(
-                "Difficulty:\nEasy\nMedium\nHard\nBoss"
-            );
-
-        if (!difficulty) return;
-
-
-        const d =
-            difficulty
-                .trim()
-                .toLowerCase();
-
-
-        if (!mainXPRewards[d]) {
-
-            alert(
-                "Invalid difficulty."
-            );
-
-            return;
-        }
-
-
-        const category =
-            chooseCategory();
-
-        if (
-            category === null
-        ) {
-            return;
-        }
-
-
-        mainQuests.push({
-
-            name:
-                name.trim(),
-
-            difficulty:
-                d.charAt(0)
-                    .toUpperCase()
-                +
-                d.slice(1),
-
-            xp:
-                mainXPRewards[d],
-
-            category:
-                category
-
-        });
-
-
-        saveData();
-
-        renderMainQuests();
-    }
-);
-
-
-// ========================================
-// ADD SIDE
-// ========================================
-
-({ addEventListener() {} }).addEventListener(
-    "click",
-    function () {
-
-        const name =
-            prompt(
-                "Enter side quest:"
-            );
-
-        if (!name) return;
-
-
-        const xp =
-            Number(
-                prompt(
-                    "XP reward:",
-                    "100"
-                )
-            );
-
-        if (!xp || xp < 1) {
-            return;
-        }
-
-
-        const category =
-            chooseCategory();
-
-        if (
-            category === null
-        ) {
-            return;
-        }
-
-
-        sideQuests.push({
-
-            name:
-                name.trim(),
-
-            xp:
-                xp,
-
-            category:
-                category
-
-        });
-
-
-        saveData();
-
-        renderSideQuests();
-    }
-);
-
-
-// ========================================
-// ADD DAILY
-// ========================================
-
-({ addEventListener() {} }).addEventListener(
-    "click",
-    function () {
-
-        const name =
-            prompt(
-                "Enter daily quest:"
-            );
-
-        if (!name) return;
-
-
-        const xp =
-            Number(
-                prompt(
-                    "Daily XP reward:",
-                    "30"
-                )
-            );
-
-        if (!xp || xp < 1) {
-            return;
-        }
-
-
-        const category =
-            chooseCategory(
-                "discipline"
-            );
-
-        if (
-            category === null
-        ) {
-            return;
-        }
-
-
-        dailyQuests.push({
-
-            id:
-                makeId(),
-
-            name:
-                name.trim(),
-
-            xp:
-                xp,
-
-            category:
-                category,
-
-            lastCompleted:
-                null,
-
-            streak:
-                0
-
-        });
-
-
-        saveData();
-
-        renderDailyQuests();
-    }
-);
-
-
-// ========================================
-// ADD WEEKLY
-// ========================================
-
-({ addEventListener() {} }).addEventListener(
-    "click",
-    function () {
-
-        const name =
-            prompt(
-                "Enter weekly quest:"
-            );
-
-        if (!name) return;
-
-
-        const target =
-            Number(
-                prompt(
-                    "Weekly target:",
-                    "5"
-                )
-            );
-
-        if (!target || target < 1) {
-            return;
-        }
-
-
-        const xp =
-            Number(
-                prompt(
-                    "Weekly XP reward:",
-                    "300"
-                )
-            );
-
-        if (!xp || xp < 1) {
-            return;
-        }
-
-
-        const category =
-            chooseCategory(
-                "discipline"
-            );
-
-        if (
-            category === null
-        ) {
-            return;
-        }
-
-
-        const link =
-            chooseDailyLink();
-
-        if (
-            link.cancelled
-        ) {
-            return;
-        }
-
-
-        weeklyQuests.push({
-
-            name:
-                name.trim(),
-
-            target:
-                target,
-
-            progress:
-                0,
-
-            xp:
-                xp,
-
-            category:
-                category,
-
-            linkedDailyId:
-                link.linkedDailyId
-
-        });
-
-
-        saveData();
-
-        renderWeeklyQuests();
-    }
-);
-
-
-// ========================================
-// CLEAR HISTORY
-// ========================================
-
-function openQuestDialog(type) {
+function openQuestDialog(type, edit = null) {
     questDialogType = type;
+    editingQuest = edit;
     questForm.reset();
     questFormError.textContent = "";
-    questDialogTitle.textContent = `CREATE ${type.toUpperCase()} QUEST`;
+    questDialogTitle.textContent = `${edit ? "EDIT" : "CREATE"} ${type.toUpperCase()} QUEST`;
+    questForm.querySelector(".primary-action").textContent = edit ? "SAVE CHANGES" : "FORGE QUEST";
     difficultyField.hidden = type !== "main";
     xpField.hidden = type === "main";
     targetField.hidden = type !== "weekly";
@@ -2387,11 +1788,20 @@ function openQuestDialog(type) {
     questDailyLinkInput.innerHTML = '<option value="">Manual progress</option>' + dailyQuests.map(function (quest) {
         return `<option value="${quest.id}">${quest.name}</option>`;
     }).join("");
+    if (edit) {
+        questNameInput.value = edit.quest.name;
+        questCategoryInput.value = edit.quest.category || "general";
+        questXPInput.value = edit.quest.xp || questXPInput.value;
+        questDifficultyInput.value = String(edit.quest.difficulty || "easy").toLowerCase();
+        questTargetInput.value = edit.quest.target || 5;
+        questDailyLinkInput.value = edit.quest.linkedDailyId || "";
+    }
     questDialog.showModal();
     requestAnimationFrame(function () { questNameInput.focus(); });
 }
 
 function closeQuestDialog() {
+    editingQuest = null;
     questDialog.close();
 }
 
@@ -2420,7 +1830,8 @@ questForm.addEventListener("submit", function (event) {
 
     if (questDialogType === "main") {
         const difficulty = questDifficultyInput.value;
-        mainQuests.push({ name, difficulty: difficulty[0].toUpperCase() + difficulty.slice(1), xp: mainXPRewards[difficulty], category });
+        const value = { name, difficulty: difficulty[0].toUpperCase() + difficulty.slice(1), xp: mainXPRewards[difficulty], category };
+        if (editingQuest) Object.assign(editingQuest.quest, value); else mainQuests.push(value);
     }
     else if (!Number.isFinite(xp) || xp < 1) {
         questFormError.textContent = "XP must be at least 1.";
@@ -2428,10 +1839,12 @@ questForm.addEventListener("submit", function (event) {
         return;
     }
     else if (questDialogType === "side") {
-        sideQuests.push({ name, xp, category });
+        const value = { name, xp, category };
+        if (editingQuest) Object.assign(editingQuest.quest, value); else sideQuests.push(value);
     }
     else if (questDialogType === "daily") {
-        dailyQuests.push({ id: makeId(), name, xp, category, lastCompleted: null, streak: 0 });
+        if (editingQuest) Object.assign(editingQuest.quest, { name, xp, category });
+        else dailyQuests.push({ id: makeId(), name, xp, category, lastCompleted: null, streak: 0 });
     }
     else {
         const target = Number(questTargetInput.value);
@@ -2440,7 +1853,9 @@ questForm.addEventListener("submit", function (event) {
             questTargetInput.focus();
             return;
         }
-        weeklyQuests.push({ name, target, progress: 0, xp, category, linkedDailyId: questDailyLinkInput.value || null });
+        const value = { name, target, xp, category, linkedDailyId: questDailyLinkInput.value || null };
+        if (editingQuest) Object.assign(editingQuest.quest, value);
+        else weeklyQuests.push({ ...value, progress: 0 });
     }
 
     saveData();
