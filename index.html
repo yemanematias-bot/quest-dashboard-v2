@@ -11,8 +11,10 @@
 <body>
 <div class="dashboard">
     <header class="topbar">
-        <div>
-            <h1>⚔️ QUEST DASHBOARD V3</h1>
+        <div class="brand-block">
+            <span class="hero-kicker">LIFE OPERATING SYSTEM</span>
+            <h1><span class="brand-mark">⚔</span> QUEST DASHBOARD <em>V3</em></h1>
+            <p class="hero-copy">Build the character. Finish the mission.</p>
             <p id="system-status">System Online · Local Mode</p>
         </div>
         <div class="level-box">
@@ -49,8 +51,15 @@
         <div class="xp-bar"><div class="xp-fill"></div></div>
     </section>
 
+    <section class="mission-strip" aria-label="Mission overview">
+        <article><span>ACTIVE MISSIONS</span><strong id="active-quest-count">0</strong><small>Across every campaign</small></article>
+        <article><span>DAILY PROTOCOLS</span><strong id="daily-quest-count">0</strong><small>Habits in rotation</small></article>
+        <article><span>MISSIONS CLEARED</span><strong id="cleared-quest-count">0</strong><small>Proof of execution</small></article>
+        <article class="focus-card"><span>CURRENT DIRECTIVE</span><strong>STAY CONSISTENT</strong><small>Discipline compounds</small></article>
+    </section>
+
     <main class="grid">
-        <section class="panel">
+        <section class="panel main-panel">
             <div class="panel-header">
                 <h2>⚔ MAIN QUESTS</h2>
                 <button id="add-main-quest">+ ADD QUEST</button>
@@ -76,7 +85,7 @@
             </div>
         </section>
 
-        <section class="panel">
+        <section class="panel side-panel">
             <div class="panel-header">
                 <h2>🔹 SIDE QUESTS</h2>
                 <button id="add-side-quest">+ ADD SIDE</button>
@@ -84,7 +93,7 @@
             <div id="side-quest-list"><p>No side quests yet.</p></div>
         </section>
 
-        <section class="panel">
+        <section class="panel daily-panel">
             <div class="panel-header">
                 <h2>🔥 DAILY QUESTS</h2>
                 <button id="add-daily-quest">+ ADD DAILY</button>
