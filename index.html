@@ -1,158 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quest Dashboard V3</title>
+    <meta name="theme-color" content="#070b10">
+    <title>Quest Dashboard V4</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-<div class="dashboard">
-    <header class="topbar">
-        <div class="brand-block">
-            <span class="hero-kicker">LIFE OPERATING SYSTEM</span>
-            <h1><span class="brand-mark">⚔</span> QUEST DASHBOARD <em>V3</em></h1>
-            <p class="hero-copy">Build the character. Finish the mission.</p>
-            <p id="system-status">System Online · Local Mode</p>
+<div class="app-shell">
+    <aside class="command-rail">
+        <div class="rail-brand">
+            <span class="rail-sigil">⚔</span>
+            <div><strong>QUEST</strong><small>DASHBOARD V4</small></div>
         </div>
-        <div class="level-box">
-            <span>LEVEL</span>
-            <strong id="top-level">01</strong>
+               <nav class="primary-nav" aria-label="Dashboard">
+            <button class="nav-item is-active" data-view-target="overview"><span>⌂</span><b>Overview</b></button>
+            <button class="nav-item" data-view-target="main"><span>◆</span><b>Main quests</b></button>
+            <button class="nav-item" data-view-target="daily"><span>◉</span><b>Daily protocols</b></button>
+            <button class="nav-item" data-view-target="side"><span>◇</span><b>Side quests</b></button>
+            <button class="nav-item" data-view-target="weekly"><span>▦</span><b>Weekly trials</b></button>
+            <button class="nav-item" data-view-target="character"><span>◈</span><b>Character</b></button>
+            <button class="nav-item" data-view-target="achievements"><span>♛</span><b>Achievements</b></button>
+            <button class="nav-item" data-view-target="history"><span>↺</span><b>History</b></button>
+        </nav>
+        <div class="rail-footer">
+            <span id="rail-status-dot"></span>
+            <div><strong id="rail-level">LEVEL 01</strong><small id="system-status">System Online · Local Mode</small></div>
         </div>
-    </header>
+    </aside>
 
-    <section class="cloud-panel">
-        <div>
-            <strong>☁ CLOUD SYNC</strong>
-            <span id="cloud-status">Sign in to sync between devices.</span>
-        </div>
-
-        <div id="auth-signed-out" class="auth-controls">
-            <input id="auth-email" type="email" autocomplete="email" placeholder="Email">
-            <input id="auth-password" type="password" autocomplete="current-password" placeholder="Password">
-            <button id="sign-in">SIGN IN</button>
-            <button id="sign-up">CREATE ACCOUNT</button>
-        </div>
-
-        <div id="auth-signed-in" class="auth-controls" hidden>
-            <span id="account-email"></span>
-            <button id="sync-now">SYNC NOW</button>
-            <button id="sign-out">SIGN OUT</button>
-        </div>
-    </section>
-
-    <section class="xp-section">
-        <div class="xp-info">
-            <span>XP</span>
-            <span id="xp-text">0 / 1000</span>
-        </div>
-        <div class="xp-bar"><div class="xp-fill"></div></div>
-    </section>
-
-    <section class="mission-strip" aria-label="Mission overview">
-        <article><span>ACTIVE MISSIONS</span><strong id="active-quest-count">0</strong><small>Across every campaign</small></article>
-        <article><span>DAILY PROTOCOLS</span><strong id="daily-quest-count">0</strong><small>Habits in rotation</small></article>
-        <article><span>MISSIONS CLEARED</span><strong id="cleared-quest-count">0</strong><small>Proof of execution</small></article>
-        <article class="focus-card"><span>CURRENT DIRECTIVE</span><strong>STAY CONSISTENT</strong><small>Discipline compounds</small></article>
-    </section>
-
-    <main class="grid">
-        <section class="panel main-panel">
-            <div class="panel-header">
-                <h2>⚔ MAIN QUESTS</h2>
-                <button id="add-main-quest">+ ADD QUEST</button>
+    <main class="workspace">
+        <header class="workspace-header">
+            <div>
+                <span class="screen-kicker">LIFE OPERATING SYSTEM</span>
+                <h1 id="view-title">COMMAND OVERVIEW</h1>
+                <p id="view-subtitle">Your current position, priorities and momentum.</p>
             </div>
-            <div id="main-quest-list"><p>No main quests yet.</p></div>
-        </section>
+            <div class="level-box"><span>LEVEL</span><strong id="top-level">01</strong></div>
+        </header>
 
-        <section class="panel character-panel">
-            <div class="panel-header"><h2>📊 CHARACTER</h2></div>
-            <div class="character-core">
-                <div><span>LEVEL</span><strong id="character-level">1</strong></div>
-                <div><span>TITLE</span><strong id="character-title">NOVICE</strong></div>
-            </div>
-            <div class="character-info">
-                <p>Total XP: <strong id="character-xp">0</strong></p>
-                <p>Quests Done: <strong id="character-quests">0</strong></p>
-            </div>
-            <div class="stat-grid">
-                <div class="stat-box"><span>💪 STR</span><strong id="stat-strength">0</strong></div>
-                <div class="stat-box"><span>🧠 INT</span><strong id="stat-knowledge">0</strong></div>
-                <div class="stat-box"><span>💰 WLT</span><strong id="stat-wealth">0</strong></div>
-                <div class="stat-box"><span>⚡ DSC</span><strong id="stat-discipline">0</strong></div>
-            </div>
-        </section>
-
-        <section class="panel side-panel">
-            <div class="panel-header">
-                <h2>🔹 SIDE QUESTS</h2>
-                <button id="add-side-quest">+ ADD SIDE</button>
-            </div>
-            <div id="side-quest-list"><p>No side quests yet.</p></div>
-        </section>
-
-        <section class="panel daily-panel">
-            <div class="panel-header">
-                <h2>🔥 DAILY QUESTS</h2>
-                <button id="add-daily-quest">+ ADD DAILY</button>
-            </div>
-            <div id="daily-quest-list"><p>No daily quests yet.</p></div>
-        </section>
-
-        <section class="panel weekly-panel">
-            <div class="panel-header">
-                <h2>📅 WEEKLY QUESTS</h2>
-                <button id="add-weekly-quest">+ ADD WEEKLY</button>
-            </div>
-            <div id="weekly-quest-list"><p>No weekly quests yet.</p></div>
-        </section>
-
-        <section class="panel achievements-panel">
-            <div class="panel-header"><h2>🏆 ACHIEVEMENTS</h2></div>
-            <div id="achievement-list"><p>No achievements unlocked yet.</p></div>
-        </section>
-
-        <section class="panel history-panel">
-            <div class="panel-header">
-                <h2>📜 RECENT ACTIVITY</h2>
-                <div class="history-actions">
-                    <button id="export-backup">EXPORT</button>
-                    <button id="import-backup">IMPORT</button>
-                    <button id="clear-history">CLEAR</button>
+        <section class="app-view is-active" data-view="overview">
+            <section class="overview-hero">
+                <div>
+                    <span class="eyebrow">CURRENT DIRECTIVE</span>
+                    <h2>BUILD THE CHARACTER.<br><em>FINISH THE MISSION.</em></h2>
+                    <p>Consistency is the multiplier. Pick the next move and execute.</p>
                 </div>
-            </div>
-            <div id="history-list"><p>No completed quests yet.</p></div>
+                <div class="xp-orbit">
+                    <div><strong id="overview-level">01</strong><span>LEVEL</span></div>
+                </div>
+            </section>
+
+            <section class="mission-strip" aria-label="Mission overview">
+                <article><span>ACTIVE MISSIONS</span><strong id="active-quest-count">0</strong><small>Across every campaign</small></article>
+                <article><span>DAILY PROTOCOLS</span><strong id="daily-quest-count">0</strong><small>Habits in rotation</small></article>
+                <article><span>MISSIONS CLEARED</span><strong id="cleared-quest-count">0</strong><small>Proof of execution</small></article>
+                <article class="focus-card"><span>DOMINANT ATTRIBUTE</span><strong id="dominant-stat">DISCIPLINE</strong><small>Your strongest character stat</small></article>
+            </section>
+
+            <section class="overview-grid">
+                <article class="overview-card priority-card">
+                    <div class="card-heading"><div><span class="eyebrow">NEXT MOVE</span><h2>Priority mission</h2></div><button data-jump="main">VIEW ALL</button></div>
+                    <div id="priority-mission"><p>No main quest selected. Forge one and begin.</p></div>
+                </article>
+                <article class="overview-card progress-card">
+                    <div class="card-heading"><div><span class="eyebrow">PROGRESSION</span><h2>Experience</h2></div><strong id="xp-text">0 / 1000</strong></div>
+                    <div class="xp-bar"><div class="xp-fill"></div></div>
+                    <div class="progress-meta"><span>Total XP <b id="overview-total-xp">0</b></span><span>Quests done <b id="overview-quests-done">0</b></span></div>
+                </article>
+                <article class="overview-card daily-preview">
+                    <div class="card-heading"><div><span class="eyebrow">TODAY</span><h2>Daily protocols</h2></div><button data-jump="daily">OPEN</button></div>
+                    <div id="daily-preview-list"></div>
+                </article>
+                <article class="overview-card stat-preview">
+                    <div class="card-heading"><div><span class="eyebrow">BUILD</span><h2>Attributes</h2></div><button data-jump="character">DETAILS</button></div>
+                    <div id="overview-stats"></div>
+                </article>
+            </section>
+
+            <section class="cloud-panel">
+                <div><strong>☁ CLOUD SYNC</strong><span id="cloud-status">Sign in to sync between devices.</span></div>
+                <div id="auth-signed-out" class="auth-controls">
+                    <input id="auth-email" type="email" autocomplete="email" placeholder="Email">
+                    <input id="auth-password" type="password" autocomplete="current-password" placeholder="Password">
+                    <button id="sign-in">SIGN IN</button><button id="sign-up">CREATE ACCOUNT</button>
+                </div>
+                <div id="auth-signed-in" class="auth-controls" hidden>
+                    <span id="account-email"></span><button id="sync-now">SYNC NOW</button><button id="sign-out">SIGN OUT</button>
+                </div>
+            </section>
+        </section>
+
+        <section class="app-view" data-view="main">
+            <section class="panel main-panel"><div class="panel-header"><div><span class="eyebrow">CAMPAIGN</span><h2>◆ MAIN QUESTS</h2></div><button id="add-main-quest">+ FORGE QUEST</button></div><div id="main-quest-list"><p>No main quests yet.</p></div></section>
+        </section>
+        <section class="app-view" data-view="daily">
+            <section class="panel daily-panel"><div class="panel-header"><div><span class="eyebrow">PROTOCOLS</span><h2>◉ DAILY QUESTS</h2></div><button id="add-daily-quest">+ ADD DAILY</button></div><div id="daily-quest-list"><p>No daily quests yet.</p></div></section>
+        </section>
+        <section class="app-view" data-view="side">
+            <section class="panel side-panel"><div class="panel-header"><div><span class="eyebrow">OPTIONAL MISSIONS</span><h2>◇ SIDE QUESTS</h2></div><button id="add-side-quest">+ ADD SIDE</button></div><div id="side-quest-list"><p>No side quests yet.</p></div></section>
+        </section>
+        <section class="app-view" data-view="weekly">
+            <section class="panel weekly-panel"><div class="panel-header"><div><span class="eyebrow">LONG GAME</span><h2>▦ WEEKLY TRIALS</h2></div><button id="add-weekly-quest">+ ADD WEEKLY</button></div><div id="weekly-quest-list"><p>No weekly quests yet.</p></div></section>
+        </section>
+        <section class="app-view" data-view="character">
+            <section class="panel character-panel">
+                <div class="panel-header"><div><span class="eyebrow">PLAYER PROFILE</span><h2>◈ CHARACTER</h2></div></div>
+                <div class="character-core"><div><span>LEVEL</span><strong id="character-level">1</strong></div><div><span>TITLE</span><strong id="character-title">NOVICE</strong></div></div>
+                <div class="character-info"><p>Total XP: <strong id="character-xp">0</strong></p><p>Quests Done: <strong id="character-quests">0</strong></p></div>
+                <div class="stat-grid"><div class="stat-box"><span>💪 STR</span><strong id="stat-strength">0</strong></div><div class="stat-box"><span>🧠 INT</span><strong id="stat-knowledge">0</strong></div><div class="stat-box"><span>💰 WLT</span><strong id="stat-wealth">0</strong></div><div class="stat-box"><span>⚡ DSC</span><strong id="stat-discipline">0</strong></div></div>
+            </section>
+        </section>
+        <section class="app-view" data-view="achievements">
+            <section class="panel achievements-panel"><div class="panel-header"><div><span class="eyebrow">TROPHY VAULT</span><h2>♛ ACHIEVEMENTS</h2></div></div><div id="achievement-list"><p>No achievements unlocked yet.</p></div></section>
+        </section>
+        <section class="app-view" data-view="history">
+            <section class="panel history-panel"><div class="panel-header"><div><span class="eyebrow">MISSION LOG</span><h2>↺ RECENT ACTIVITY</h2></div><div class="history-actions"><button id="export-backup">EXPORT</button><button id="import-backup">IMPORT</button><button id="clear-history">CLEAR</button></div></div><div id="history-list"><p>No completed quests yet.</p></div></section>
         </section>
     </main>
 </div>
 
+<nav class="mobile-nav" aria-label="Mobile dashboard">
+    <button class="nav-item is-active" data-view-target="overview"><span>⌂</span><b>Home</b></button>
+    <button class="nav-item" data-view-target="main"><span>◆</span><b>Main</b></button>
+    <button class="nav-item" data-view-target="daily"><span>◉</span><b>Daily</b></button>
+    <button class="nav-item" data-view-target="weekly"><span>▦</span><b>Weekly</b></button>
+    <button class="nav-item" data-view-target="character"><span>◈</span><b>Player</b></button>
+</nav>
+
 <dialog id="quest-dialog" class="quest-dialog">
     <form id="quest-form" method="dialog">
-        <div class="dialog-heading">
-            <div>
-                <span class="eyebrow">QUEST FORGE</span>
-                <h2 id="quest-dialog-title">CREATE QUEST</h2>
-            </div>
-            <button id="close-quest-dialog" class="icon-button" type="button" aria-label="Close">×</button>
-        </div>
+        <div class="dialog-heading"><div><span class="eyebrow">QUEST FORGE</span><h2 id="quest-dialog-title">CREATE QUEST</h2></div><button id="close-quest-dialog" class="icon-button" type="button" aria-label="Close">×</button></div>
         <label>Quest name<input id="quest-name" name="name" maxlength="90" required placeholder="What must be done?"></label>
         <div class="form-grid">
-            <label id="difficulty-field">Difficulty
-                <select id="quest-difficulty" name="difficulty">
-                    <option value="easy">Easy · 100 XP</option><option value="medium">Medium · 250 XP</option>
-                    <option value="hard">Hard · 500 XP</option><option value="boss">Boss · 1000 XP</option>
-                </select>
-            </label>
+            <label id="difficulty-field">Difficulty<select id="quest-difficulty" name="difficulty"><option value="easy">Easy · 100 XP</option><option value="medium">Medium · 250 XP</option><option value="hard">Hard · 500 XP</option><option value="boss">Boss · 1000 XP</option></select></label>
             <label id="xp-field">XP reward<input id="quest-xp" name="xp" type="number" min="1" value="100"></label>
-            <label>Character stat
-                <select id="quest-category" name="category">
-                    <option value="strength">💪 Strength</option><option value="knowledge">🧠 Knowledge</option>
-                    <option value="wealth">💰 Wealth</option><option value="discipline">⚡ Discipline</option>
-                    <option value="general">⭐ General</option>
-                </select>
-            </label>
+            <label>Character stat<select id="quest-category" name="category"><option value="strength">💪 Strength</option><option value="knowledge">🧠 Knowledge</option><option value="wealth">💰 Wealth</option><option value="discipline">⚡ Discipline</option><option value="general">⭐ General</option></select></label>
             <label id="target-field">Weekly target<input id="quest-target" name="target" type="number" min="1" value="5"></label>
             <label id="daily-link-field">Link a daily quest<select id="quest-daily-link" name="dailyLink"></select></label>
         </div>

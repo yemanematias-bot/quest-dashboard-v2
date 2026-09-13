@@ -640,6 +640,56 @@ function updateCharacter() {
 
     document.getElementById("cleared-quest-count").textContent =
         player.questsDone;
+
+    document.getElementById("overview-level").textContent =
+        String(level).padStart(2, "0");
+
+    document.getElementById("rail-level").textContent =
+        `LEVEL ${String(level).padStart(2, "0")}`;
+
+    document.getElementById("overview-total-xp").textContent = player.xp;
+    document.getElementById("overview-quests-done").textContent = player.questsDone;
+
+    renderOverview();
+}
+
+
+function renderOverview() {
+    const priority = document.getElementById("priority-mission");
+    const dailyPreview = document.getElementById("daily-preview-list");
+    const overviewStats = document.getElementById("overview-stats");
+    const dominantStat = document.getElementById("dominant-stat");
+
+    if (mainQuests.length) {
+        const quest = mainQuests[0];
+        priority.innerHTML = `<div class="priority-quest"><div><h3>◆ ${quest.name}</h3><p>${categoryIcon(quest.category)} ${categoryName(quest.category)} · ${quest.difficulty.toUpperCase()}</p></div><span class="priority-xp">+${quest.xp} XP</span></div>`;
+    }
+    else {
+        priority.innerHTML = "<p>No main quest selected. Forge one and begin.</p>";
+    }
+
+    if (dailyQuests.length) {
+        dailyPreview.innerHTML = dailyQuests.slice(0, 4).map(function (quest) {
+            const done = quest.lastCompleted === getToday();
+            return `<div class="daily-preview-item"><span>${done ? "✓" : "○"} ${quest.name}</span><span>${done ? "CLEARED" : `+${quest.xp} XP`}</span></div>`;
+        }).join("");
+    }
+    else {
+        dailyPreview.innerHTML = '<p class="empty-state">No daily protocols yet.</p>';
+    }
+
+    const stats = [
+        ["STRENGTH", player.stats.strength],
+        ["KNOWLEDGE", player.stats.knowledge],
+        ["WEALTH", player.stats.wealth],
+        ["DISCIPLINE", player.stats.discipline]
+    ];
+    const highest = Math.max(1, ...stats.map(function (stat) { return stat[1]; }));
+    const dominant = stats.reduce(function (best, stat) { return stat[1] > best[1] ? stat : best; }, stats[0]);
+    dominantStat.textContent = dominant[0];
+    overviewStats.innerHTML = stats.map(function (stat) {
+        return `<div class="stat-line"><span>${stat[0]}</span><div class="stat-track"><i style="width:${(stat[1] / highest) * 100}%"></i></div><b>${stat[1]}</b></div>`;
+    }).join("");
 }
 
 
@@ -2000,6 +2050,47 @@ function setupCollapsiblePanels() {
 
 
 // ========================================
+// V4 NAVIGATION
+// ========================================
+
+function setupNavigation() {
+    const viewCopy = {
+        overview: ["COMMAND OVERVIEW", "Your current position, priorities and momentum."],
+        main: ["MAIN CAMPAIGN", "The objectives capable of changing your life."],
+        daily: ["DAILY PROTOCOLS", "Small actions repeated until they become identity."],
+        side: ["SIDE QUESTS", "Useful missions outside the critical path."],
+        weekly: ["WEEKLY TRIALS", "Longer challenges with measurable targets."],
+        character: ["CHARACTER PROFILE", "The attributes your actions are building."],
+        achievements: ["TROPHY VAULT", "Milestones earned through actual execution."],
+        history: ["MISSION ARCHIVE", "A record of the work already completed."]
+    };
+
+    function showView(view) {
+        if (!viewCopy[view]) view = "overview";
+        document.querySelectorAll(".app-view").forEach(function (section) {
+            section.classList.toggle("is-active", section.dataset.view === view);
+        });
+        document.querySelectorAll("[data-view-target]").forEach(function (button) {
+            button.classList.toggle("is-active", button.dataset.viewTarget === view);
+        });
+        document.getElementById("view-title").textContent = viewCopy[view][0];
+        document.getElementById("view-subtitle").textContent = viewCopy[view][1];
+        localStorage.setItem("questDashboardActiveView", view);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.querySelectorAll("[data-view-target]").forEach(function (button) {
+        button.addEventListener("click", function () { showView(button.dataset.viewTarget); });
+    });
+    document.querySelectorAll("[data-jump]").forEach(function (button) {
+        button.addEventListener("click", function () { showView(button.dataset.jump); });
+    });
+
+    showView(localStorage.getItem("questDashboardActiveView") || "overview");
+}
+
+
+// ========================================
 // START
 // ========================================
 
@@ -2009,4 +2100,4 @@ addBackupButtons();
 
 renderAll();
 
-setupCollapsiblePanels();
+setupNavigation();
