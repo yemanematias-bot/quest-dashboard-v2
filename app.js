@@ -6,6 +6,21 @@ const addMainQuestButton = document.getElementById("add-main-quest");
 const addSideQuestButton = document.getElementById("add-side-quest");
 const addDailyQuestButton = document.getElementById("add-daily-quest");
 const addWeeklyQuestButton = document.getElementById("add-weekly-quest");
+const questDialog = document.getElementById("quest-dialog");
+const questForm = document.getElementById("quest-form");
+const questDialogTitle = document.getElementById("quest-dialog-title");
+const questNameInput = document.getElementById("quest-name");
+const questDifficultyInput = document.getElementById("quest-difficulty");
+const questXPInput = document.getElementById("quest-xp");
+const questCategoryInput = document.getElementById("quest-category");
+const questTargetInput = document.getElementById("quest-target");
+const questDailyLinkInput = document.getElementById("quest-daily-link");
+const difficultyField = document.getElementById("difficulty-field");
+const xpField = document.getElementById("xp-field");
+const targetField = document.getElementById("target-field");
+const dailyLinkField = document.getElementById("daily-link-field");
+const questFormError = document.getElementById("quest-form-error");
+let questDialogType = "main";
 const clearHistoryButton = document.getElementById("clear-history");
 
 const mainQuestList = document.getElementById("main-quest-list");
@@ -2056,7 +2071,7 @@ function renderHistory() {
 // ADD MAIN
 // ========================================
 
-addMainQuestButton.addEventListener(
+({ addEventListener() {} }).addEventListener(
     "click",
     function () {
 
@@ -2133,7 +2148,7 @@ addMainQuestButton.addEventListener(
 // ADD SIDE
 // ========================================
 
-addSideQuestButton.addEventListener(
+({ addEventListener() {} }).addEventListener(
     "click",
     function () {
 
@@ -2193,7 +2208,7 @@ addSideQuestButton.addEventListener(
 // ADD DAILY
 // ========================================
 
-addDailyQuestButton.addEventListener(
+({ addEventListener() {} }).addEventListener(
     "click",
     function () {
 
@@ -2264,7 +2279,7 @@ addDailyQuestButton.addEventListener(
 // ADD WEEKLY
 // ========================================
 
-addWeeklyQuestButton.addEventListener(
+({ addEventListener() {} }).addEventListener(
     "click",
     function () {
 
@@ -2357,6 +2372,81 @@ addWeeklyQuestButton.addEventListener(
 // ========================================
 // CLEAR HISTORY
 // ========================================
+
+function openQuestDialog(type) {
+    questDialogType = type;
+    questForm.reset();
+    questFormError.textContent = "";
+    questDialogTitle.textContent = `CREATE ${type.toUpperCase()} QUEST`;
+    difficultyField.hidden = type !== "main";
+    xpField.hidden = type === "main";
+    targetField.hidden = type !== "weekly";
+    dailyLinkField.hidden = type !== "weekly";
+    questXPInput.value = type === "daily" ? 30 : type === "weekly" ? 300 : 100;
+    questCategoryInput.value = type === "daily" || type === "weekly" ? "discipline" : "general";
+    questDailyLinkInput.innerHTML = '<option value="">Manual progress</option>' + dailyQuests.map(function (quest) {
+        return `<option value="${quest.id}">${quest.name}</option>`;
+    }).join("");
+    questDialog.showModal();
+    requestAnimationFrame(function () { questNameInput.focus(); });
+}
+
+function closeQuestDialog() {
+    questDialog.close();
+}
+
+addMainQuestButton.addEventListener("click", function () { openQuestDialog("main"); });
+addSideQuestButton.addEventListener("click", function () { openQuestDialog("side"); });
+addDailyQuestButton.addEventListener("click", function () { openQuestDialog("daily"); });
+addWeeklyQuestButton.addEventListener("click", function () { openQuestDialog("weekly"); });
+document.getElementById("close-quest-dialog").addEventListener("click", closeQuestDialog);
+document.getElementById("cancel-quest-dialog").addEventListener("click", closeQuestDialog);
+
+questDialog.addEventListener("click", function (event) {
+    if (event.target === questDialog) closeQuestDialog();
+});
+
+questForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const name = questNameInput.value.trim();
+    const category = normalizeCategory(questCategoryInput.value);
+    const xp = Number(questXPInput.value);
+
+    if (!name) {
+        questFormError.textContent = "Give the quest a name.";
+        questNameInput.focus();
+        return;
+    }
+
+    if (questDialogType === "main") {
+        const difficulty = questDifficultyInput.value;
+        mainQuests.push({ name, difficulty: difficulty[0].toUpperCase() + difficulty.slice(1), xp: mainXPRewards[difficulty], category });
+    }
+    else if (!Number.isFinite(xp) || xp < 1) {
+        questFormError.textContent = "XP must be at least 1.";
+        questXPInput.focus();
+        return;
+    }
+    else if (questDialogType === "side") {
+        sideQuests.push({ name, xp, category });
+    }
+    else if (questDialogType === "daily") {
+        dailyQuests.push({ id: makeId(), name, xp, category, lastCompleted: null, streak: 0 });
+    }
+    else {
+        const target = Number(questTargetInput.value);
+        if (!Number.isFinite(target) || target < 1) {
+            questFormError.textContent = "Weekly target must be at least 1.";
+            questTargetInput.focus();
+            return;
+        }
+        weeklyQuests.push({ name, target, progress: 0, xp, category, linkedDailyId: questDailyLinkInput.value || null });
+    }
+
+    saveData();
+    renderAll();
+    closeQuestDialog();
+});
 
 clearHistoryButton.addEventListener(
     "click",
