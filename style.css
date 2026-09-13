@@ -1269,3 +1269,101 @@ body::before {
         flex: 1;
     }
 }
+
+
+/* ===== COLLAPSIBLE WINDOWS ===== */
+
+.grid > .panel > .panel-header {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 18px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.grid > .panel > .panel-header::before {
+    content: "OPEN WINDOW";
+    margin-left: auto;
+    color: #536575;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.collapse-toggle {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    place-items: center;
+    flex: 0 0 32px;
+    color: #37f58a;
+    border: 1px solid rgba(55, 245, 138, .24);
+    border-radius: 9px;
+    background: rgba(55, 245, 138, .06);
+}
+
+.collapse-toggle span {
+    display: block;
+    font-size: 20px;
+    line-height: 1;
+    transform: rotate(180deg);
+    transition: transform .32s cubic-bezier(.2, .8, .2, 1);
+}
+
+.collapsible-content {
+    max-height: none;
+    overflow: hidden;
+    opacity: 1;
+    transform: translateY(0);
+    transform-origin: top;
+    transition:
+        max-height .42s cubic-bezier(.2, .8, .2, 1),
+        opacity .24s ease,
+        transform .34s cubic-bezier(.2, .8, .2, 1);
+}
+
+.grid > .panel.is-collapsed {
+    min-height: 0;
+    padding-top: 19px;
+    padding-bottom: 19px;
+}
+
+.grid > .panel.is-collapsed > .panel-header {
+    margin-bottom: 0;
+}
+
+.grid > .panel.is-collapsed > .panel-header::before {
+    content: "CLOSED";
+}
+
+.grid > .panel.is-collapsed .collapse-toggle span {
+    transform: rotate(0deg);
+}
+
+.grid > .panel.is-collapsed > .collapsible-content {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px) scaleY(.96);
+}
+
+.character-panel > .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media (max-width: 600px) {
+    .grid > .panel > .panel-header {
+        align-items: center;
+        flex-direction: row;
+    }
+
+    .grid > .panel > .panel-header::before {
+        display: none;
+    }
+
+    .collapse-toggle {
+        margin-left: auto;
+    }
+}
