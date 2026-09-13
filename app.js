@@ -1927,6 +1927,79 @@ function renderAll() {
 
 
 // ========================================
+// COLLAPSIBLE PANELS
+// ========================================
+
+function setupCollapsiblePanels() {
+    const storageKey = "questDashboardPanelState";
+    const savedState = safeParse(localStorage.getItem(storageKey)) || {};
+
+    document.querySelectorAll(".grid > .panel").forEach(function (panel, index) {
+        const header = panel.querySelector(":scope > .panel-header");
+        if (!header) return;
+
+        const title = header.querySelector("h2");
+        const panelKey = panel.classList.contains("main-panel") ? "main" :
+            panel.classList.contains("character-panel") ? "character" :
+            panel.classList.contains("side-panel") ? "side" :
+            panel.classList.contains("daily-panel") ? "daily" :
+            panel.classList.contains("weekly-panel") ? "weekly" :
+            panel.classList.contains("achievements-panel") ? "achievements" :
+            panel.classList.contains("history-panel") ? "history" : `panel-${index}`;
+
+        const body = document.createElement("div");
+        body.className = "collapsible-content";
+        Array.from(panel.children).forEach(function (child) {
+            if (child !== header) body.appendChild(child);
+        });
+        panel.appendChild(body);
+
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "collapse-toggle";
+        toggle.setAttribute("aria-label", `Toggle ${title ? title.textContent.trim() : "section"}`);
+        toggle.innerHTML = '<span aria-hidden="true">⌄</span>';
+        header.appendChild(toggle);
+
+        function setCollapsed(collapsed, animate) {
+            panel.classList.toggle("is-collapsed", collapsed);
+            toggle.setAttribute("aria-expanded", String(!collapsed));
+
+            if (!animate) {
+                body.style.maxHeight = collapsed ? "0px" : "none";
+                return;
+            }
+
+            if (collapsed) {
+                body.style.maxHeight = `${body.scrollHeight}px`;
+                requestAnimationFrame(function () { body.style.maxHeight = "0px"; });
+            }
+            else {
+                body.style.maxHeight = `${body.scrollHeight}px`;
+                body.addEventListener("transitionend", function unlockHeight() {
+                    if (!panel.classList.contains("is-collapsed")) body.style.maxHeight = "none";
+                    body.removeEventListener("transitionend", unlockHeight);
+                });
+            }
+
+            savedState[panelKey] = collapsed;
+            localStorage.setItem(storageKey, JSON.stringify(savedState));
+        }
+
+        const startsCollapsed = Object.prototype.hasOwnProperty.call(savedState, panelKey)
+            ? savedState[panelKey]
+            : true;
+        setCollapsed(startsCollapsed, false);
+
+        header.addEventListener("click", function (event) {
+            if (event.target.closest("button") && !event.target.closest(".collapse-toggle")) return;
+            setCollapsed(!panel.classList.contains("is-collapsed"), true);
+        });
+    });
+}
+
+
+// ========================================
 // START
 // ========================================
 
@@ -1935,3 +2008,5 @@ saveData();
 addBackupButtons();
 
 renderAll();
+
+setupCollapsiblePanels();
