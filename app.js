@@ -122,7 +122,6 @@ let player = savedData.player || {};
 
 if (player.xp === undefined) player.xp = 0;
 if (player.questsDone === undefined) player.questsDone = 0;
-if (player.priorityMainQuestId === undefined) player.priorityMainQuestId = null;
 
 if (!player.stats) {
     player.stats = {
@@ -209,6 +208,10 @@ function categoryName(category) {
         category.slice(1);
 }
 
+function mainQuestKey(quest, index) {
+    return quest.id || `legacy:${index}:${quest.name}:${quest.difficulty}`;
+}
+
 
 // ========================================
 // OLD DATA CONVERSION
@@ -219,15 +222,12 @@ mainQuests = mainQuests.map(function (quest) {
     if (typeof quest === "string") {
 
         return {
-            id: makeId(),
             name: quest,
             difficulty: "Medium",
             xp: 250,
             category: "general"
         };
     }
-
-    if (!quest.id) quest.id = makeId();
 
     if (!quest.category) {
         quest.category = "general";
@@ -665,8 +665,8 @@ function renderOverview() {
     const dominantStat = document.getElementById("dominant-stat");
 
     if (mainQuests.length) {
-        const quest = mainQuests.find(function (item) {
-            return item.id === player.priorityMainQuestId;
+        const quest = mainQuests.find(function (item, index) {
+            return mainQuestKey(item, index) === player.priorityMainQuestId;
         }) || mainQuests[0];
         priority.innerHTML = `<div class="priority-quest"><div><h3>◆ ${quest.name}</h3><p>${categoryIcon(quest.category)} ${categoryName(quest.category)} · ${quest.difficulty.toUpperCase()}</p></div><span class="priority-xp">+${quest.xp} XP</span></div>`;
     }
@@ -1026,13 +1026,15 @@ function renderMainQuests() {
     mainQuests.forEach(
         function (quest, index) {
 
+            const questKey = mainQuestKey(quest, index);
+
             const element =
                 document.createElement(
                     "div"
                 );
 
             element.className =
-                `quest-item${quest.id === player.priorityMainQuestId ? " is-priority" : ""}`;
+                `quest-item${questKey === player.priorityMainQuestId ? " is-priority" : ""}`;
 
 
             element.innerHTML = `
@@ -1057,7 +1059,7 @@ function renderMainQuests() {
                 <div class="quest-actions">
 
                     <button class="priority-button">
-                        ${quest.id === player.priorityMainQuestId ? "★ PRIORITY" : "☆ PIN"}
+                        ${questKey === player.priorityMainQuestId ? "★ PRIORITY" : "☆ PIN"}
                     </button>
 
                     <button class="edit-button">
@@ -1081,7 +1083,7 @@ function renderMainQuests() {
             });
 
             element.querySelector(".priority-button").addEventListener("click", function () {
-                player.priorityMainQuestId = player.priorityMainQuestId === quest.id ? null : quest.id;
+                player.priorityMainQuestId = player.priorityMainQuestId === questKey ? null : questKey;
                 saveData();
                 renderAll();
             });
@@ -1106,7 +1108,7 @@ function renderMainQuests() {
                         }
 
 
-                        if (player.priorityMainQuestId === quest.id) player.priorityMainQuestId = null;
+                        if (player.priorityMainQuestId === questKey) player.priorityMainQuestId = null;
 
                         mainQuests.splice(
                             index,
@@ -1147,7 +1149,7 @@ function renderMainQuests() {
                         );
 
 
-                        if (player.priorityMainQuestId === quest.id) player.priorityMainQuestId = null;
+                        if (player.priorityMainQuestId === questKey) player.priorityMainQuestId = null;
 
                         mainQuests.splice(
                             index,
