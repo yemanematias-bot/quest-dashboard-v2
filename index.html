@@ -23,6 +23,7 @@
             <button class="nav-item" data-view-target="character"><span>◈</span><b>Character</b></button>
             <button class="nav-item" data-view-target="achievements"><span>♛</span><b>Achievements</b></button>
             <button class="nav-item" data-view-target="history"><span>↺</span><b>History</b></button>
+            <button class="nav-item" data-view-target="help"><span>?</span><b>Help & feedback</b></button>
         </nav>
         <div class="rail-footer">
             <span id="rail-status-dot"></span>
@@ -118,6 +119,45 @@
         <section class="app-view" data-view="history">
             <section class="panel history-panel"><div class="panel-header"><div><span class="eyebrow">MISSION LOG</span><h2>↺ RECENT ACTIVITY</h2></div><div class="history-actions"><button id="export-backup">EXPORT</button><button id="import-backup">IMPORT</button><button id="clear-history">CLEAR</button></div></div><div id="history-list"><p>No completed quests yet.</p></div></section>
         </section>
+
+        <section class="app-view" data-view="help">
+            <section class="help-hero">
+                <div><span class="eyebrow">FIELD GUIDE</span><h2>HOW THE SYSTEM WORKS</h2><p>Everything needed to operate Quest Dashboard V4 without guessing.</p></div>
+                <div class="help-badge">?</div>
+            </section>
+
+            <section class="manual-grid">
+                <article><span>01</span><h3>Choose your mission</h3><p><b>Main</b> is for major objectives. <b>Daily</b> builds habits. <b>Side</b> holds optional tasks. <b>Weekly</b> tracks repeated targets.</p></article>
+                <article><span>02</span><h3>Forge a quest</h3><p>Open a quest screen and press Add. Choose its name, XP reward, difficulty and the character attribute it develops.</p></article>
+                <article><span>03</span><h3>Set the priority</h3><p>Use <b>☆ Pin</b> on one Main Quest. It becomes your active directive and appears on the Overview screen.</p></article>
+                <article><span>04</span><h3>Complete and level up</h3><p>Completing missions awards XP and attributes. Every 1,000 XP increases your level and unlocks stronger titles.</p></article>
+                <article><span>05</span><h3>Build streaks</h3><p>Daily Quests reset each day. Completing them on consecutive days increases their streak and feeds linked Weekly Trials.</p></article>
+                <article><span>06</span><h3>Protect progress</h3><p>Sign in for cloud sync across devices. Export a backup from History before major changes. Local progress still works offline.</p></article>
+            </section>
+
+            <section class="help-layout">
+                <article class="faq-panel">
+                    <div class="section-heading"><span class="eyebrow">COMMON QUESTIONS</span><h2>FAQ</h2></div>
+                    <details><summary>Which quest type should I use?</summary><p>Main Quests are major outcomes; Daily Quests repeat every day; Side Quests are one-off optional tasks; Weekly Trials require several completions before claiming XP.</p></details>
+                    <details><summary>What happens when I complete a quest?</summary><p>You receive its XP, your completed-quest total increases and its chosen character attribute gains points. One-off quests then move into History.</p></details>
+                    <details><summary>How do Weekly Trials update automatically?</summary><p>When creating or editing a Weekly Trial, link it to a Daily Quest. Each completion of that Daily automatically adds one Weekly progress point.</p></details>
+                    <details><summary>Where is my progress stored?</summary><p>It is stored locally in your browser. When signed in, the complete save is also synced to your private cloud account.</p></details>
+                    <details><summary>Can somebody else use my link?</summary><p>Yes. Everyone gets separate local progress. They should create their own account for cloud sync and never use another person's login.</p></details>
+                    <details><summary>What should I do if the dashboard looks outdated?</summary><p>Force-refresh with Ctrl + F5 on desktop. On mobile, close the tab and reopen it after GitHub Pages finishes deploying.</p></details>
+                </article>
+
+                <article class="feedback-panel">
+                    <div class="section-heading"><span class="eyebrow">PLAYER REPORT</span><h2>SEND FEEDBACK</h2><p>Report confusion, bugs or missing features. The form prepares a GitHub report for review.</p></div>
+                    <form id="feedback-form">
+                        <label>Report type<select id="feedback-type"><option>Improvement idea</option><option>Something is confusing</option><option>Bug or broken function</option><option>Missing feature</option></select></label>
+                        <label>Experience rating<select id="feedback-rating"><option value="5">5 — Excellent</option><option value="4">4 — Good</option><option value="3" selected>3 — Decent</option><option value="2">2 — Frustrating</option><option value="1">1 — Poor</option></select></label>
+                        <label>What happened or what should improve?<textarea id="feedback-message" required maxlength="1500" placeholder="Be specific: what did you try, what happened, and what did you expect?"></textarea></label>
+                        <p id="feedback-status" role="status"></p>
+                        <div class="feedback-actions"><button type="button" id="copy-feedback">COPY REPORT</button><button type="submit">OPEN GITHUB REPORT</button></div>
+                    </form>
+                </article>
+            </section>
+        </section>
     </main>
 </div>
 
@@ -127,6 +167,7 @@
     <button class="nav-item" data-view-target="daily"><span>◉</span><b>Daily</b></button>
     <button class="nav-item" data-view-target="weekly"><span>▦</span><b>Weekly</b></button>
     <button class="nav-item" data-view-target="character"><span>◈</span><b>Player</b></button>
+    <button class="nav-item" data-view-target="help"><span>?</span><b>Help</b></button>
 </nav>
 
 <dialog id="quest-dialog" class="quest-dialog">
