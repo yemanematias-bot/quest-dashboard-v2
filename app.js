@@ -2084,7 +2084,8 @@ function setupNavigation() {
         weekly: ["WEEKLY TRIALS", "Longer challenges with measurable targets."],
         character: ["CHARACTER PROFILE", "The attributes your actions are building."],
         achievements: ["TROPHY VAULT", "Milestones earned through actual execution."],
-        history: ["MISSION ARCHIVE", "A record of the work already completed."]
+        history: ["MISSION ARCHIVE", "A record of the work already completed."],
+        help: ["HELP CENTER", "Field manual, common questions and player feedback."]
     };
 
     function showView(view) {
@@ -2110,6 +2111,42 @@ function setupNavigation() {
 
     showView(localStorage.getItem("questDashboardActiveView") || "overview");
 }
+
+function buildFeedbackReport() {
+    const type = document.getElementById("feedback-type").value;
+    const rating = document.getElementById("feedback-rating").value;
+    const message = document.getElementById("feedback-message").value.trim();
+    return {
+        title: `[Feedback] ${type}`,
+        body: `## Quest Dashboard V4 feedback\n\n**Type:** ${type}\n**Rating:** ${rating}/5\n**Device:** ${navigator.userAgent}\n\n### Report\n${message}`
+    };
+}
+
+async function copyFeedbackReport() {
+    const report = buildFeedbackReport();
+    const status = document.getElementById("feedback-status");
+    if (!document.getElementById("feedback-message").value.trim()) {
+        status.textContent = "Write your feedback first.";
+        return;
+    }
+    try {
+        await navigator.clipboard.writeText(`${report.title}\n\n${report.body}`);
+        status.textContent = "Report copied. Send it anywhere you contact the creator.";
+    }
+    catch (_error) {
+        status.textContent = "Copy was blocked by the browser. Select the message and copy it manually.";
+    }
+}
+
+document.getElementById("copy-feedback").addEventListener("click", copyFeedbackReport);
+document.getElementById("feedback-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const report = buildFeedbackReport();
+    if (!document.getElementById("feedback-message").value.trim()) return;
+    const url = `https://github.com/yemanematias-bot/quest-dashboard-v2/issues/new?title=${encodeURIComponent(report.title)}&body=${encodeURIComponent(report.body)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    document.getElementById("feedback-status").textContent = "GitHub opened. Submit the issue to send your report.";
+});
 
 
 // ========================================
