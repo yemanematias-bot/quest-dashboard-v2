@@ -1,0 +1,45 @@
+{
+  "id": "./",
+  "name": "Quest Dashboard",
+  "short_name": "Quests",
+  "description": "Your daily quests, missions and character progress.",
+  "start_url": "./?view=daily",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#070b10",
+  "theme_color": "#070b10",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Daily quests",
+      "url": "./?view=daily",
+      "description": "Complete today's quests"
+    },
+    {
+      "name": "Main quests",
+      "url": "./?view=main"
+    },
+    {
+      "name": "Overview",
+      "url": "./?view=overview"
+    }
+  ]
+}

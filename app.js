@@ -1329,6 +1329,11 @@ function renderSideQuests() {
 // ========================================
 
 function renderDailyQuests() {
+    const clearedToday = dailyQuests.filter(quest => quest.lastCompleted === getToday()).length;
+    document.getElementById("daily-progress").textContent = dailyQuests.length
+        ? `${clearedToday} / ${dailyQuests.length} cleared today · ${dailyQuests.length - clearedToday} remaining`
+        : "Add your first daily quest to start today's checklist.";
+
 
     dailyQuestList.innerHTML = "";
 
@@ -2109,7 +2114,8 @@ function setupNavigation() {
         button.addEventListener("click", function () { showView(button.dataset.jump); });
     });
 
-    showView(localStorage.getItem("questDashboardActiveView") || "overview");
+    const requestedView = new URLSearchParams(location.search).get("view");
+    showView(requestedView || localStorage.getItem("questDashboardActiveView") || "overview");
 }
 
 function buildFeedbackReport() {
