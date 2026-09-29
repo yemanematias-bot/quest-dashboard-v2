@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+ <uses-permission android:name="android.permission.INTERNET"/>
+ <application android:allowBackup="false" android:usesCleartextTraffic="false" android:label="Quest Widgets" android:icon="@drawable/quest_icon" android:theme="@android:style/Theme.Material.NoActionBar">
+  <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop">
+   <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
+  </activity>
+  <receiver android:name=".DailyWidget" android:exported="false">
+   <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE"/><action android:name="android.intent.action.DATE_CHANGED"/><action android:name="android.intent.action.TIME_SET"/><action android:name="android.intent.action.TIMEZONE_CHANGED"/></intent-filter>
+   <meta-data android:name="android.appwidget.provider" android:resource="@xml/daily_widget"/>
+  </receiver>
+ </application>
+</manifest>
