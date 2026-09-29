@@ -84,3 +84,11 @@ button{cursor:pointer}
     .manual-grid{grid-template-columns:1fr 1fr}.help-layout{grid-template-columns:1fr}.help-hero{padding:25px 22px}.help-badge{width:70px;height:70px;font-size:30px}.mobile-nav{position:fixed;z-index:20;right:9px;bottom:9px;left:9px;display:grid;grid-template-columns:repeat(6,1fr);padding:7px;border:1px solid var(--line);border-radius:16px;background:rgba(7,12,17,.94);box-shadow:0 15px 45px rgba(0,0,0,.5);backdrop-filter:blur(16px)}.mobile-nav .nav-item{display:grid;justify-items:center;gap:3px;padding:7px 2px;text-align:center}.mobile-nav .nav-item span{font-size:15px}.mobile-nav .nav-item b{font-size:7px}
 }
 @media(max-width:480px){.xp-orbit,.help-badge{display:none}.overview-hero h2{font-size:29px}.mission-strip{grid-template-columns:1fr 1fr}.mission-strip .focus-card strong{font-size:11px}.manual-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.quest-dialog form{padding:19px}.history-actions,.feedback-actions{display:flex;flex-wrap:wrap}.feedback-actions button{flex:1}}
+
+/* Install and quick access */
+.pwa-panel { display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:18px; margin-bottom:20px; border:1px solid #28453e; border-radius:14px; background:#0d191c; }
+.pwa-panel > div { flex:1; min-width:200px; }
+.pwa-panel p { margin:8px 0 0; color:#a7b9ba; line-height:1.5; }
+.pwa-panel a { color:#67e8cb; padding:12px; }
+[hidden] { display:none !important; }
+@media (display-mode:standalone) { body { overscroll-behavior-y:contain; } }
